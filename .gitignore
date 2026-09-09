@@ -1,0 +1,6 @@
+# CROBOTS trace outputs (CSV trajectories / state dumps from the `-t` flag)
+*.csv
+traces/
+
+# compiler object files
+*.o

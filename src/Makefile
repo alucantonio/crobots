@@ -30,9 +30,9 @@ NCURSES_LDFLAGS =	# e.g. -L/opt/foo/lib, used by the `static' target
 LIBS     = $(NCURSES_LIBS) -lm
 
 OBJS     = main.o grammar.o lexanal.o compiler.o cpu.o intrins.o \
-           display.o screen.o motion.o
+           display.o screen.o motion.o trace.o
 
-HDRS     = crobots.h compiler.h tokens.h
+HDRS     = crobots.h compiler.h tokens.h trace.h
 
 all: crobots
 

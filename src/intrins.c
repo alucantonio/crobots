@@ -15,6 +15,7 @@
 
 #include "crobots.h"
 #include "math.h"
+#include "trace.h"
 
 /* stack routines in cpu.c */
 extern long push();
@@ -169,7 +170,9 @@ long c_cannon()
       missiles[r][i].rang = (int) (distance * CLICK);
       missiles[r][i].curr_dist = 0;
       missiles[r][i].count = EXP_COUNT;
-      push(1L);  
+      if (trace_on())
+        trace_fire((int) degree);
+      push(1L);
       return;
     }
   }

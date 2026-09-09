@@ -15,8 +15,9 @@
 #include <stdio.h>
 
 /* INIT causes externals in crobots.h to have storage, & init intrinsic table */
-#define INIT 1 
+#define INIT 1
 #include "crobots.h"
+#include "trace.h"
 
 #ifdef UNIX
 #include <signal.h>
@@ -30,7 +31,7 @@ int _stack = 6000;  /* Lattice C: give more stack than default of 2048 */
 FILE *f_in;
 FILE *f_out;
 
-char *version   = "CROBOTS - version 1.1, December, 1985\n";
+char *version   = "CROBOTS - version 1.1, December 1985 (patched build; CSV tracing)\n";
 char *copyright = "Copyright 1985 by Tom Poindexter, All rights reserved.\n";
 
 
@@ -113,6 +114,13 @@ char *argv[];
           debug_only = 1;
 	  break;
 
+
+       /* trace robot/missile state to CSV files (instrumentation, see trace.h) */
+        case 't':
+        case 'T':
+          trace_prefix = (argv[i]) + 2;
+          break;
+
 	default:
 	  break;
       }
@@ -180,7 +188,9 @@ char *argv[];
 	play(files,num_robots);
       }
 	
-  /* all done */ 
+  /* all done */
+  if (trace_on())
+    trace_close();
   exit(0);
 
 }
@@ -315,6 +325,8 @@ int n;
       movement = MOTION_CYCLES;
       move_robots(1);
       move_miss(1);
+      if (trace_on())
+        trace_motion_step(1);
     }
     /* is it time to update display */
     if (--display <= 0) {
@@ -339,6 +351,8 @@ int n;
       move_robots(1);
       move_miss(1);
       update_disp();
+      if (trace_on())
+        trace_motion_step(1);
     } 
     else  
       break;
@@ -356,6 +370,18 @@ int n;
 
   if (k == 0) {
     fprintf(stdout,"\r\nIt's a draw\r\n");
+  }
+
+  if (trace_on()) {
+    int w = 0, t = 0;
+    for (i = 0; i < num_robots; i++) {
+      if (robots[i].status == ACTIVE) {
+        w = i + 1;
+        t++;
+      }
+    }
+    trace_match_end(1, (t == 1) ? w : 0);
+    trace_close();
   }
 
   end_disp();
@@ -472,6 +498,8 @@ int n;
 	    }
 	  }
 	}
+	if (trace_on())
+	  trace_motion_step(m_count);
       }
     }
 
@@ -488,6 +516,8 @@ int n;
       if (k) {
 	move_robots(0);
 	move_miss(0);
+	if (trace_on())
+	  trace_motion_step(m_count);
       } 
       else  
 	break;
@@ -512,6 +542,17 @@ int n;
       printf("mutual destruction\n");
     } else {
       printf("\n");
+    }
+
+    if (trace_on()) {
+      int w = 0, t = 0;
+      for (i = 0; i < num_robots; i++) {
+        if (robots[i].status == ACTIVE) {
+          w = i + 1;
+          t++;
+        }
+      }
+      trace_match_end(m_count, (t == 1) ? w : 0);
     }
 
     printf("  Cumulative score:\n");
