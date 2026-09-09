@@ -74,10 +74,12 @@ struct instr {			/* robot machine instruction */
   char ins_type;		/* instruction type */
   union {
     long k;			/* constant value */
-    short int var1;		/* variable offset, function offset, operator */
+    unsigned short int var1;	/* variable offset, function offset, operator */
+				/* patched: unsigned so EXTERNAL (0x8000) does not sign-extend
+				   on 32/64-bit int, which corrupted `x & ~EXTERNAL' */
     struct instr *br;		/* false branch */
     struct {
-      short int var2;		/* assignment variable offset */
+      unsigned short int var2;	/* assignment variable offset (patched: see above) */
       short int a_op;		/* assignment operator */
     } a;
   } u;

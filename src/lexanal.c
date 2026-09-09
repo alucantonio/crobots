@@ -17,7 +17,7 @@ int yyleng; extern char yytext[];
 int yymorfg;
 extern char *yysptr, yysbuf[];
 int yytchar;
-FILE *yyin = {stdin}, *yyout = {stdout};
+FILE *yyin, *yyout;	/* patched: stdin/stdout are not constant initializers in ISO C; set in yylex() */
 extern int yylineno;
 struct yysvf { 
 	struct yywork *yystoff;
@@ -57,6 +57,7 @@ int count();
 # define YYNEWLINE 10
 yylex(){
 int nstr; extern int yyprevious;
+if (yyin == 0) { yyin = stdin; yyout = stdout; }	/* patched */
 while((nstr = yylook()) >= 0)
 yyfussy: switch(nstr){
 case 0:

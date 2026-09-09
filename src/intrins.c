@@ -248,8 +248,7 @@ long c_loc_y()
 
 long c_rand()
 {
-  int rand();
-  int srand(); 	/* should be seeded elsewhere */
+  /* patched: rand/srand now come from <stdlib.h> */
   long limit;
 
   limit = pop();

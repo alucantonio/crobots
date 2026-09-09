@@ -49,9 +49,7 @@ char *argv[];
   char *strrchr();   /* this is rindex in some compilers */
   unsigned seed;
   long time();
-  long atol();
-  long cur_time;
-  int srand();
+  long cur_time;	/* patched: atol/srand now come from <stdlib.h> */
 
 
   /* print version, copyright notice, GPL notice */
@@ -614,7 +612,7 @@ char *f;
 
   cur_robot = &robots[0];
 
-  fprintf("\n\nReady to debug, use `d' to dump robot info, `q' to quit.\n\n");
+  printf("\n\nReady to debug, use `d' to dump robot info, `q' to quit.\n\n");
 
   while (c) {  
     cycle();

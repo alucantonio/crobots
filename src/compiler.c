@@ -35,7 +35,7 @@ char *s;
 }
 
 
-char *malloc();
+/* patched: malloc now comes from <stdlib.h> */
 
 
 /* init_comp - initializes the compiler for one file */
