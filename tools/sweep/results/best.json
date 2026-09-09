@@ -1,0 +1,13 @@
+{
+  "values": {
+    "A1": 425,
+    "B1_off": 1200,
+    "B1_shift": 9,
+    "B3": 192,
+    "D1": 130
+  },
+  "core_score": 0.866625,
+  "hof_score": 0.6608333333333334,
+  "n_per_pair": 1000,
+  "opt_file": "tools/sweep/results/hulk_25_opt.r"
+}

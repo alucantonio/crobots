@@ -1,0 +1,15 @@
+{
+  "values": {
+    "A1": 427,
+    "B1_off": 1273,
+    "B1_shift": 9,
+    "B3": 201,
+    "D1": 135
+  },
+  "core_score": 0.8669,
+  "hof_score": 0.6604,
+  "n_per_pair": 5000,
+  "trials": 1000,
+  "sampler": "TPESampler",
+  "opt_file": "tools/sweep/results/hulk_25_optuna.r"
+}

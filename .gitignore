@@ -7,3 +7,9 @@ traces/
 
 # Python bytecode caches
 __pycache__/
+
+# sweep-generated variant robots (regenerable: source + manifest + config)
+tools/sweep/variants/
+
+# ...but keep the sweep result tables
+!tools/sweep/results/*.csv
