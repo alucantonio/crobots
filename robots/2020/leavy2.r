@@ -1,0 +1,266 @@
+
+/*
+
+Emanuele Marsigliani
+
+Leavy2 è Leavy de-offuscato (e un pizzico ottimizzato)*/
+
+int ang,range,posx,posy,dir,timer,x,y,dx,dy;
+main(){
+	move(posy=loc_y(posx=loc_x()));
+	while(1)
+	{
+		if(shot()) shotagain();
+	}
+
+}
+
+move()
+{
+	if(timer&64)
+	{
+		if(timer&128)
+		{
+			if(posx<500)
+			{
+				x=980;
+			}
+			else
+			{
+				x=20;
+			}
+			if(posy<500)
+			{
+				y=800;
+			}
+			else
+			{
+				y=200;
+			}
+		}
+		else
+		{
+			if(posy>500)
+			{
+				if(posx>500)
+				{
+					x=800;
+					y=20;
+				}
+				else
+				{
+					x=800;
+					y=980;
+				}
+			}
+			else
+			{
+				if(posx>500)
+				{
+					x=200;
+					y=20;
+				}
+				else
+				{
+					x=200;
+					y=980;
+				}
+			}
+		}
+	}
+	else
+	{
+		if(timer&128)
+		{
+			if(posx<500)
+			{
+				x=800;
+			}
+			else
+			{
+				x=200;
+			}
+			if(posy<500)
+			{
+				y=980;
+			}
+			else
+			{
+				y=20;
+			}
+		}
+		else
+		{
+			if(posy>500)
+			{
+				if(posx>500)
+				{
+					x=20;
+					y=800;
+				}
+				else
+				{
+					x=20;
+					y=200;
+				}
+			}
+			else
+			{
+				if(posx>500)
+				{
+					x=980;
+					y=800;
+				}
+				else
+				{
+					x=980;
+					y=200;
+				}
+			}
+		}
+	}
+	dir=plot_xy();
+}
+
+shot(){
+	ang=4;
+	while(ang<360)
+	{
+		if(range=scan(ang,10))
+		{
+			if(range<60) range=60;
+			cannon(ang,range);
+			ang+=720;
+			return(1);
+		}
+		if(range=scan(360-ang,10))
+		{
+			ang=1080-ang;
+			if(range<60) range=60;
+			cannon(ang,range);
+			return(1);
+		}
+		ang+=20;
+		++timer;
+		posy=loc_y(posx=loc_x());
+		dx=x-posx;
+		dy=y-posy;
+		if(((dx*dx)+(dy*dy))<10000)
+		{
+			move(drive(dir,10));
+		}
+		if(speed()<50)
+		{
+			drive(dir=plot_xy(),100);
+		}
+	}
+	return(0);
+}
+
+shotagain()
+{
+	int hit,dang;
+	hit=1;
+	while(hit)
+	{
+		if(range=scan(ang,5))
+		{
+			if(range<60) range=60;
+			cannon(ang,range);
+		}
+		else
+		{
+			ang+=14;
+			if(range=scan(ang,10))
+			{
+				if(range<60) range=60;
+				cannon(ang+3,range);
+			}
+			else
+			{
+				ang-=28;
+				if(range=scan(ang,10))
+				{
+					if(range<60) range=60;
+					cannon(ang-6,range);
+				}
+				else
+				{
+					hit=0;
+				}
+			}
+		}
+		if(range>330)
+		{
+			ang+=(dang=rand(120));
+			if(range=scan(ang,10))
+			{
+				if(range<60) range=60;
+				cannon(ang,range);
+			}
+			else
+			{
+				if(range=scan(ang+120,10))
+				{
+					if(range<60) range=60;
+					cannon((ang+=120),range);
+				}
+				else
+				{
+					if(range=scan(ang+240,10))
+					{
+						if(range<60) range=60;
+						cannon((ang+=240),range);
+					}
+					else
+					{
+						ang-=dang;
+					}
+				}
+			}
+		}
+		++timer;
+		posy=loc_y(posx=loc_x());
+		dx=x-posx;
+		dy=y-posy;
+		if(((dx*dx)+(dy*dy))<10000)
+		{
+			drive(dir,10);
+			move();
+		}
+		if(speed()<50)
+		{
+			dir=plot_xy();
+			drive(dir,100);
+		}
+	}
+}
+
+plot_xy()
+{
+	int deg;
+	if(dx=x-loc_x(dy=y-loc_y()))
+	{
+		deg=atan(dy*100000/dx);
+		if(dx<0)
+		{
+			deg+=180;
+		}
+	}
+	else
+	{
+		if(dy<0)
+		{
+			deg=270;
+		}
+		else
+		{
+			deg=90;
+		}
+	}
+	if(deg<0)
+	{
+		deg+=360;
+	}
+	return (deg);
+}

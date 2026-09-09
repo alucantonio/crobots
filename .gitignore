@@ -4,3 +4,6 @@ traces/
 
 # compiler object files
 *.o
+
+# Python bytecode caches
+__pycache__/
